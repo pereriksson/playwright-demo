@@ -17,7 +17,7 @@ async function verifyTableRow(expectedValues: string[], page: Page) {
     return rows.map(row => {
       let result = []
       for (let i = 0; i < 10; i++) {
-        const element = row.querySelector(`*:nth-child(${i})`) as HTMLElement
+        const element = row.querySelector<HTMLElement>(`*:nth-child(${i})`)
         if (element) {
           const datasetValue = element.dataset.value
           if (datasetValue) {
