@@ -1,17 +1,17 @@
 import {expect, Page} from "@playwright/test";
 
-export async function verifyTableRowExist(expectedValues: string[], page: Page) {
-  const result = await verifyTableRow(expectedValues, page)
+export async function verifyTableRowExist(selector, expectedValues: string[], page: Page) {
+  const result = await verifyTableRow(selector, expectedValues, page)
   expect(result).toBeTruthy()
 }
 
-export async function verifyTableRowNotExist(expectedValues: string[], page: Page) {
-  const result = await verifyTableRow(expectedValues, page)
+export async function verifyTableRowNotExist(selector, expectedValues: string[], page: Page) {
+  const result = await verifyTableRow(selector, expectedValues, page)
   expect(result).toBeFalsy()
 }
 
-async function verifyTableRow(expectedValues: string[], page: Page) {
-  const rowElements = page.locator('.MuiTableRow-root')
+async function verifyTableRow(selector: string, expectedValues: string[], page: Page) {
+  const rowElements = page.locator(selector)
 
   const rows = await rowElements.evaluateAll((rows) => {
     return rows.map(row => {
@@ -37,10 +37,10 @@ async function verifyTableRow(expectedValues: string[], page: Page) {
   })
 }
 
-export async function verifySelect(name: string, expectedValues: string[], page: Page) {
+export async function verifySelect(selector: string, name: string, expectedValues: string[], page: Page) {
   await page.getByLabel(name).click()
 
-  const menuList = page.locator('.MuiMenuItem-root')
+  const menuList = page.locator(selector)
   const actualValues = await menuList.evaluateAll((menuItems) => {
     return menuItems.map((menuItem: HTMLDivElement) => {
       return menuItem.innerText

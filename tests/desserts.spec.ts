@@ -5,7 +5,9 @@ import {verifySelect, verifyTableRowExist, verifyTableRowNotExist} from "../lib/
 test('verify a desert', async ({page}) => {
   await page.goto(testData.muiDemoUrl)
 
-  await verifyTableRowExist([
+  await verifyTableRowExist(
+    '.MuiTableRow-root',
+    [
       '159',
       '6',
       '4',
@@ -19,6 +21,7 @@ test('verify a desert', async ({page}) => {
 test('all deserts are present in dropdown', async ({page}) => {
   await page.goto(testData.muiDemoUrl)
   await verifySelect(
+    '.MuiMenuItem-root',
     'Name',
     [
       'Frozen yoghurt',
@@ -43,7 +46,9 @@ test('updating a dessert', async ({page}) => {
   await page.getByRole('option', {name: "Low"}).click()
   await page.getByRole("button", {name: "Save"}).click()
 
-  await verifyTableRowExist([
+  await verifyTableRowExist(
+    '.MuiTableRow-root',
+    [
       '1',
       '2',
       '3',
@@ -58,7 +63,9 @@ test('deleting a dessert', async ({page}) => {
   await page.goto(testData.muiDemoUrl)
   await page.locator("svg[role='button']").first().click()
 
-  await verifyTableRowNotExist([
+  await verifyTableRowNotExist(
+    '.MuiTableRow-root',
+    [
       '159',
       '6',
       '24',
