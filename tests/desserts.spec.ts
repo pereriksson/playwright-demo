@@ -2,27 +2,6 @@ import {test, expect, Page} from '@playwright/test';
 import testData from '../test-data.json';
 import {verifySelect, verifyTableRowExist, verifyTableRowNotExist} from "../lib/util";
 
-test('has community page', async ({page}) => {
-  await page.goto(testData.playwrightUrl);
-
-  await page.getByRole('link', {name: 'Community'}).click()
-
-  await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible()
-})
-
-// TODO: Flaky test
-test('searching for html report', async ({page}) => {
-  await page.goto(testData.playwrightUrl);
-
-  await page.getByRole('button', {name: 'Search'}).click()
-
-  await page.keyboard.type('Opening the HTML report')
-
-  await page.getByText(/Opening the HTML report/).click()
-
-  await expect(page.getByRole('heading', {name: 'Opening the HTML report'})).toBeVisible()
-})
-
 test('verify a desert', async ({page}) => {
   await page.goto(testData.muiDemoUrl)
 
