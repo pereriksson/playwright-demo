@@ -41,15 +41,14 @@ async function tableRowExist(selector: string, expectedValues: string[], page: P
 export async function verifySelectByLabel(label: string, expectedValues: string[], page: Page) {
   await page.getByLabel(label).click()
 
-  const menuList = page.locator('.MuiMenuItem-root')
-  const actualValues = await menuList.evaluateAll((menuItems) => {
-    return menuItems.map((menuItem: HTMLDivElement) => {
-      return menuItem.innerText
-    })
-  })
+  const menuList = await page.locator('.MuiMenuItem-root').all()
 
-  const equal = compareArrays(actualValues, expectedValues)
-  expect(equal).toBeTruthy()
+  const actualValues = []
+  for (const li of menuList) {
+    actualValues.push(await li.innerText())
+  }
+
+  expect(compareArrays(actualValues, expectedValues)).toBeTruthy()
 }
 
 function compareArrays(array1: string[], array2: string[]) {
