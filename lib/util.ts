@@ -11,29 +11,31 @@ export async function verifyTableRowNotExist(selector, expectedValues: string[],
 }
 
 async function tableRowExist(selector: string, expectedValues: string[], page: Page) {
-  const rowElements = page.locator(selector)
-  const rows = await rowElements.evaluateAll((rows) => {
-    return rows.map(row => {
-      let result = []
-      for (let i = 0; i < row.children.length; i++) {
-        const element = row.querySelector<HTMLElement>(`*:nth-child(${i+1})`)
-        const datasetValue = element.dataset.value
+  const allRows = await page.locator(selector).all()
+
+  for (const row of allRows) {
+    const allCells = await row.locator("td, th").all()
+    const rowValues = []
+
+    for (const cell of allCells) {
+      const cellValue = await cell.evaluate(cell => {
+        const datasetValue = cell.dataset.value
         if (datasetValue) {
-          result.push(datasetValue)
-        } else if (element.innerText) {
-          result.push(element.innerText.trim())
+          return datasetValue
+        } else if ('innerText' in cell && cell.innerText) {
+          return cell.innerText.trim()
         }
-      }
+      })
 
-      return result
-    })
-  })
+      if (cellValue) rowValues.push(cellValue)
+    }
 
-  const row = rows.find(r => {
-    return compareArrays(r, expectedValues)
-  })
+    if (compareArrays(rowValues, expectedValues)) {
+      return true
+    }
+  }
 
-  return !!row
+  return false
 }
 
 export async function verifySelectByLabel(label: string, expectedValues: string[], page: Page) {
