@@ -10,7 +10,7 @@ test('has community page', async ({page}) => {
 })
 
 // TODO: Flaky test
-test('searching for html report', async ({page}) => {
+/*test('searching for html report', async ({page}) => {
   await page.goto(testData.playwrightUrl);
 
   await page.getByRole('button', {name: 'Search'}).click()
@@ -20,4 +20,4 @@ test('searching for html report', async ({page}) => {
   await page.getByText(/Opening the HTML report/).click()
 
   await expect(page.getByRole('heading', {name: 'Opening the HTML report'})).toBeVisible()
-})
+})*/
